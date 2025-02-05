@@ -1,22 +1,59 @@
 <!DOCTYPE html>
-<html lang="zh - CN">
-
+<html lang="zh">
 <head>
-    <meta charset="UTF - 8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>明霞哎</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         video {
+            position: absolute;
             width: 100vw;
             height: 100vh;
-            object - fit: cover;
+            object-fit: cover;
+        }
+        #loading {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
-
 <body>
-    <video src="250101-2.mp4" autoplay muted loop></video>
-    <audio src="250101.mp3" autoplay loop></audio>
-</body>
+    <!-- 加载提示 -->
+    <div id="loading">加载中...</div>
 
+    <!-- 视频播放 -->
+    <video id="video" src="250101-2.mp4" autoplay loop muted preload="auto"></video>
+
+    <!-- 音乐播放 -->
+    <audio id="bg-music" src="250101.mp3" autoplay loop preload="auto"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const video = document.getElementById('video');
+            const audio = document.getElementById('bg-music');
+            const loading = document.getElementById('loading');
+
+            // 当视频可以播放时，隐藏加载提示
+            video.addEventListener('canplay', () => {
+                loading.style.display = 'none';
+            });
+
+            // 解决部分浏览器不自动播放问题
+            video.play().catch(() => console.log('视频自动播放可能受限'));
+            audio.play().catch(() => console.log('音频自动播放可能受限'));
+        });
+    </script>
+</body>
 </html>
